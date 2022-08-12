@@ -1,23 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+
+import Login from "./pages/login";
+import ErrorPage from "./pages/errorPage";
+import MainPage from "./pages/main";
+import JoinPage from "./pages/joinRestaurant";
+import CreateRestaurantPage from "./pages/createRestaurant";
+import RestaurantPage from "./pages/restaurantPage";
+import useToken from './useToken';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  const { token, setToken } = useToken();
+
+  if(!token){
+    console.log(token)
+    return <Login setToken={setToken}/>
+  }
+
+  return(
+    <div className="wrapper">
+    <Router>
+        <Routes>
+          <Route path="/" element={<MainPage/>} />
+          <Route path="/errorPage" element={<ErrorPage/>} />
+          <Route path="/joinPage" element={<JoinPage/>} />
+          <Route path="/createRestaurant" element={<CreateRestaurantPage/>} />
+          <Route path="/restaurantPage" element={<RestaurantPage/>} />
+
+        </Routes>
+
+    </Router>
     </div>
   );
 }
