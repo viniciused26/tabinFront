@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import axios from "../api/axios";
-import '../css/login.css'; 
-const LOGIN_URL = 'api/user/login';
+import '../styles/login.css'; 
+const LOGIN_URL = 'api/auth/login';
 
 
 export default function Login({setToken}) {
@@ -67,7 +67,7 @@ export default function Login({setToken}) {
       </div>
       <div>
         <br/>
-        <a href="#">crie uma conta</a> <br/>
+        <a href="/errorPage">crie uma conta</a> <br/>
         <a href="#">esqueci minha senha</a>
       </div>
     </div>
