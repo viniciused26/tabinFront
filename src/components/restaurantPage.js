@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "../api/axios";
+import AddMeals from "./addMeals.js";
+import Menu from "./menu.js";
 const RESTAURANT_URL = 'api/restaurant/listByOwner';
 
 function RestaurantPage(props) {
@@ -7,6 +9,7 @@ function RestaurantPage(props) {
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
   const [price, setPrice] = useState('');
+  const [newMeal, setNewMeal] = useState(false);
   const [restaurantData, setRestaurantData] = useState();
 
     async function getRestaurant(){
@@ -30,54 +33,10 @@ function RestaurantPage(props) {
     return (
       <div className="App">
         <div><h1>RESTAURANT PAGE</h1></div>
-        <div>
-          <input 
-              type="text" 
-              onChange={(e) => setName(e.target.value)} 
-              value={name}
-              placeholder="nome da refeição" 
-          />
-          <p> </p>
-          <input 
-              type="text" 
-              onChange={(e) => setDesc(e.target.value)} 
-              value={desc}
-              placeholder="descrição da refeição" 
-          />
-          <p> </p>
-          <input 
-              type="text" 
-              onChange={(e) => setPrice(e.target.value)} 
-              value={price}
-              placeholder="preço da refeição" 
-          />
-          <p> </p>
-          <button>buscar</button>
-        </div>
-  
-        <div><p>  </p></div>
-  
-        <div>
         <center>
-        <table>
-          <tr>
-            <th>Refeições</th>
-          </tr>
-          <tr>
-            <td>Comida 1</td>
-            <td>Descrição</td>
-            <td>Preço</td>
-            <td><button>editar</button></td>
-          </tr>
-          <tr>
-            <td>Comida 2</td>
-            <td>Descrição</td>
-            <td>Preço</td>
-            <td><button>editar</button></td>
-          </tr>
-        </table>
+          <p>VOCÊ NÃO TEM RESTAURANTE!</p>
         </center>
-        </div>
+        
         
       </div>
     );
@@ -90,6 +49,11 @@ function RestaurantPage(props) {
       <p>Nome: {JSON.stringify(restaurantData?.name)}</p>        
       <p>CNPJ: {JSON.stringify(restaurantData?.cnpj)}</p>
     </div>
+    <input type="checkbox" id="newMeal" value={newMeal} onChange={() => setNewMeal(!newMeal)} /> Criar novo prato
+    {newMeal == true ? <AddMeals currentToken={props.currentToken}/> : null}
+    <div><br/></div>
+    <Menu currentToken={props.currentToken}/>
+    
   </div>
   );
 
