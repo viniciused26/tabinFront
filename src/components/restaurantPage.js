@@ -1,7 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import "./styles.css";
 import axios from "../api/axios";
-import AddMeals from "./addMeals.js";
 import Menu from "./menu.js";
+import { Box, Button } from "@mui/material";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 const RESTAURANT_URL = 'api/restaurant/listByOwner';
 
 function RestaurantPage(props) {
@@ -12,7 +16,26 @@ function RestaurantPage(props) {
   const [newMeal, setNewMeal] = useState(false);
   const [restaurantData, setRestaurantData] = useState();
 
-    async function getRestaurant(){
+  const [menuOpen, setMenuOpen] = useState(true);
+  const [tableOpen, setTableOpen] = useState(false);
+
+  const [value, setValue] = useState('1');
+
+  function menuClickHandle(){
+    setMenuOpen(true);
+    setTableOpen(false);
+  }
+
+  function tableClickHandle(){
+    setTableOpen(true);
+    setMenuOpen(false);
+  }
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  }
+
+  async function getRestaurant(){
         try{
           const response = await axios.get(RESTAURANT_URL, {
             headers: {
@@ -32,32 +55,30 @@ function RestaurantPage(props) {
   if(!restaurantData){
     return (
       <div className="App">
-        <div><h1>RESTAURANT PAGE</h1></div>
         <center>
           <p>VOCÊ NÃO TEM RESTAURANTE!</p>
-        </center>
-        
-        
+        </center>        
       </div>
     );
   }
 
   return(
-    <div className="App">
-    <div><h1>RESTAURANT PAGE</h1></div>
-    <div>
-      <p>Nome: {JSON.stringify(restaurantData?.name)}</p>        
-      <p>CNPJ: {JSON.stringify(restaurantData?.cnpj)}</p>
-    </div>
-    <input type="checkbox" id="newMeal" value={newMeal} onChange={() => setNewMeal(!newMeal)} /> Criar novo prato
-    {newMeal == true ? <AddMeals currentToken={props.currentToken}/> : null}
-    <div><br/></div>
-    <Menu currentToken={props.currentToken}/>
-    
-  </div>
+    <Box>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <TabList aria-label='Tabs example' onChange={handleChange} centered>
+          <Tab label='Cardápio' value='1' />
+          <Tab label='Mesas' value='2' />
+        </TabList>
+        </Box>
+        <TabPanel value='1'><Menu currentToken={props.currentToken}/></TabPanel>
+        <TabPanel value='2'>Mesas</TabPanel>
+      </TabContext>
+    </Box>
   );
 
   
 }
 
 export default RestaurantPage;
+

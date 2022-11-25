@@ -3,13 +3,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Grid, Typography, Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { makeStyles } from '@mui/material/styles';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import axios from "../api/axios";
-import AddMeals from "./addMeals.js";
 import './styles.css' 
-const MEAL_URL = 'api/meal/register';
-
+const MEAL_URL = 'api/meal/listRestaurantMeals';
 
 const style = {
   margin: 0,
@@ -20,21 +17,15 @@ const style = {
   position: 'fixed',
 }
 
-export default function Menu(props) {
+export default function ConsumerMenu(props) {
 
   const [meals, setMeals] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
 
   async function getMeals(){
     try{
-      const response = await axios.get('api/meal/listAll', {
-        headers: {
-          'auth-token': props.currentToken,
-        }
-      });
-      
+      const response = await axios.get(MEAL_URL + `/${props.restaurant}`);
       setMeals(response.data);
-      
     }catch(err){
       console.log(err);
     }
@@ -46,7 +37,6 @@ export default function Menu(props) {
 
   return (
     <div>
-
         <Grid container spacing={3}>
         {meals.map((meal) => {
           return(
@@ -79,9 +69,9 @@ export default function Menu(props) {
   })}
         </Grid>
         <Fab color="secondary" style={style} onClick={() => { setOpenDialog(true) }}>
-          <AddIcon/>
+          <p>0</p>
+          <ShoppingCartIcon/>
         </Fab>
-        <AddMeals openDialog={openDialog} setOpenDialog={setOpenDialog} currentToken={props.currentToken}/>
   </div>
   );
   

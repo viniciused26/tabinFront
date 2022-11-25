@@ -9,10 +9,10 @@ import CreateRestaurantPage from "./components/createRestaurant";
 import RestaurantPage from "./components/restaurantPage";
 import Navbar from "./components/navbar";
 import ProfilePage from "./components/profile";
+import ConsumerPage from "./components/consumerPage";
 
 
 import useToken from './useToken';
-
 
 
 function App() {
@@ -26,17 +26,15 @@ function App() {
   return(
     <div className="wrapper">
     <Router>
-    <Navbar />
+        <Navbar isHomepage={false} />
         <Routes>
-          <Route path="/" element={<MainPage/>} />
           <Route path="/errorPage" element={<ErrorPage/>} />
           <Route path="/joinPage" element={<JoinPage/>} />
           <Route path="/createRestaurant" element={<CreateRestaurantPage/>} />
           <Route path="/restaurantPage" element={<RestaurantPage currentToken={token}/>} />
           <Route path="/profilePage" element={<ProfilePage currentToken={token}/>} />
-
+          <Route path="/consumerPage/:restaurant/:tableId" element={<ConsumerPage />} />
         </Routes>
-
     </Router>
     </div>
   );

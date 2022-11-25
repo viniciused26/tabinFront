@@ -1,10 +1,11 @@
+import { DialogContent, DialogTitle } from "@mui/material";
+import Dialog from '@mui/material/Dialog';
 import { useState, useEffect, useRef } from "react";
 import axios from "../api/axios";
 import '../styles/login.css'; 
 const MEAL_URL = 'api/meal/register';
 
-
-export default function AddMeals(props) {
+export default function AddMeals( props, setOpenDialog ) {
 
   const [name, setName] = useState('');
   const [standartPrice, setStandartPrice] = useState();
@@ -15,6 +16,8 @@ export default function AddMeals(props) {
   const [currentType, setCurrentType] = useState('Definir categoria');
   const [newType, setNewType] = useState('');
 
+  const [open, setOpen] = useState(false);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,6 +39,9 @@ export default function AddMeals(props) {
     }catch(err){
       console.log(err);
     }
+
+    
+
   } 
 
   async function getMealTypes(){
@@ -61,9 +67,9 @@ export default function AddMeals(props) {
   }, [standartPrice, discountPrice]);
 
   return (
-    <div className="login-wrapper">
-      <div><h3>ADICIONE PRATO</h3></div>
-      <div>
+    <Dialog open={props.openDialog} onClose={() => { props.setOpenDialog(false) }}>
+      <DialogTitle>ADICIONE UM PRATO</DialogTitle>
+      <DialogContent>
         <form onSubmit={handleSubmit}>
           <span>nome: </span>
           <input 
@@ -167,8 +173,8 @@ export default function AddMeals(props) {
          
           <span/> <button type="submit">enviar</button>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
   
   

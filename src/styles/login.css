@@ -1,5 +1,86 @@
-.login-wrapper {
+.block-one {
+    height: 93.5vh;
+    background-image: url(../assets/land.png);
+    padding: 20;
+    background-color: black;
+    text-align: center;
+}
+
+.block-two {
+    height: 63.5vh;
+    padding: 20;
+    background-color:white;
+    text-align: center;
+}
+
+.block-three {
+    height: 93.5vh;
+    padding: 20;
+    background-color: #551f5f;
+    text-align: center;
+}
+
+.block-four {
+    height: 93.5vh;
+    padding: 20;
+    background-color: white;
+    text-align: center;
+}
+
+.buttonGroup{
+    margin-right: 5px;
+}
+
+.parent-one{
+    position: relative;
+    top: 20%;
+}
+
+.parent-two{
+    margin-top: 3vh;
+    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-evenly;
+    top: 10%;
+}
+
+.parent-four{
+    display: inline-block;
+    position: relative;
+    width: 90%;
+    top: 10%;
+}
+
+.child {
+    padding-top: 5vh;
+    display: inline-flex;
+}
+
+.child-two {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.child-three{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.child-four {
+    display: inline-flex;
+    padding-top: 5vh;
+}
+
+.grid-element {
+    width: 55vh;
+}
+
+#stepicon-one {
+    height: 100px;
+}
+
+#stepicon-two {
+    height: 125px;
 }
