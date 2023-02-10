@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./styles.css";
 import axios from "../api/axios";
-import Menu from "./menu.js";
+import Menu from "../components/menu.js";
 import { Box, Button } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

@@ -1,5 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "http://localhost:3002/"
+    //baseURL: "http://api.tabin.com.br/" //remoto
+    baseURL: "http://localhost:3002", //local
 });

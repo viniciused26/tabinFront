@@ -1,0 +1,15 @@
+.menu {
+  margin: 0px;
+  padding: 15px;
+}
+
+.restaurant-buttons {
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo-navbar {
+  padding: 1.3vh;
+  max-height: 3.5vh;
+}

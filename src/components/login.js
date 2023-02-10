@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import Logo from '../assets/logo.png';
 import LandingDesktop from './landingDesktop';
 
-const LOGIN_URL = 'api/auth/login';
+const LOGIN_URL = 'auth/login';
 
 
 export default function Login({setToken}) {
@@ -37,7 +37,7 @@ export default function Login({setToken}) {
       const response = await axios.post(LOGIN_URL, { email: email, password: password });
       setToken(response.data);
     }catch(err){
-      console.log(err);
+      console.log("ERRO: ", err);
     }
   } 
 
