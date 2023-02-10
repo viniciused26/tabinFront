@@ -1,15 +1,16 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Login from "./components/login";
-import ErrorPage from "./pages/errorPage";
-import MainPage from "./components/main";
-import JoinPage from "./pages/joinRestaurant";
-import CreateRestaurantPage from "./pages/createRestaurant";
-import RestaurantPage from "./pages/restaurantPage";
-import Navbar from "./components/navbar";
-import ProfilePage from "./pages/profile";
-import ConsumerPage from "./pages/consumerPage";
+import Login from "./Components/login";
+import ErrorPage from "./Pages/errorPage";
+import MainPage from "./Components/main";
+import JoinPage from "./Pages/joinRestaurant";
+import CreateRestaurantPage from "./Pages/createRestaurant";
+import RestaurantPage from "./Pages/restaurantPage";
+import Navbar from "./Components/navbar";
+import ProfilePage from "./Pages/profile";
+import ConsumerPage from "./Pages/consumerPage";
+import { DashboardPage } from "./Pages/Dashboard"
 
 
 import useToken from './useToken';
@@ -28,7 +29,7 @@ function App() {
     <Router>
         <Navbar isHomepage={false} />
         <Routes>
-          <Route path="/" element={<ErrorPage/>} />
+          <Route path="/" element={<DashboardPage/>} />
           <Route path="/joinPage" element={<JoinPage/>} />
           <Route path="/createRestaurant" element={<CreateRestaurantPage/>} />
           <Route path="/restaurantPage" element={<RestaurantPage currentToken={token}/>} />

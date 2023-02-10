@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from 'react-router-dom';
 import "./styles.css";
-import axios from "../api/axios";
+import { tabinService } from "../Services/tabinService";
 import ConsumerMenu from "./consumerMenu.js";
 import { Box, Button } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-const RESTAURANT_URL = 'api/restaurant/listByName';
 
 
 function ConsumerPage(props) {
@@ -24,14 +23,12 @@ function ConsumerPage(props) {
 
   async function getRestaurant(){
         try{
-          const response = await axios.get(RESTAURANT_URL + `/${restaurant}`);
+          const response = await tabinService.getRestaurantByName(restaurant);
           setRestaurantData(response.data);
         }catch(err){
           console.log(err);
         }
-  }
-
-  
+  }  
 
   useEffect(() => {
     getRestaurant();

@@ -1,7 +1,7 @@
 import { DialogContent, DialogTitle } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import { useState, useEffect, useRef } from "react";
-import axios from "../api/axios";
+import { tabinService } from "../Services/tabinService";
 import '../styles/login.css'; 
 const MEAL_URL = 'api/meal/register';
 
@@ -21,10 +21,6 @@ export default function AddMeals( props, setOpenDialog ) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const tokenHeader = {
-      'auth-token': props.currentToken
-    };
-
     const mealData = { 
       name: name, 
       standartPrice: standartPrice,
@@ -35,22 +31,15 @@ export default function AddMeals( props, setOpenDialog ) {
     };
 
     try{
-      const response = await axios.post(MEAL_URL, mealData, {headers: tokenHeader});
+      const response = tabinService.newMeal(mealData, props.currentToken)
     }catch(err){
       console.log(err);
     }
-
-    
-
   } 
 
   async function getMealTypes(){
     try{
-      const response = await axios.get('api/restaurant/getMealTypes', {
-        headers: {
-          'auth-token': props.currentToken,
-        }
-      });
+      const response = tabinService.getMealTypes(props.currentToken);
       response.data.unshift('Definir categoria');
       setTypes(response.data);
       

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./styles.css";
-import axios from "../api/axios";
-import Menu from "../components/menu.js";
+import { tabinService } from "../Services/tabinService";
+import Menu from "../Components/menu.js";
 import { Box, Button } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -37,12 +37,8 @@ function RestaurantPage(props) {
 
   async function getRestaurant(){
         try{
-          const response = await axios.get(RESTAURANT_URL, {
-            headers: {
-              'auth-token': props.currentToken,
-            }
-          });
-          setRestaurantData(response.data);
+          const response = tabinService.getOwnerRestaurant(props.currentToken);
+          setRestaurantData(response);
         }catch(err){
           console.log(err);
         }

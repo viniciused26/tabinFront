@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import { tabinService } from "../Services/tabinService";
 import { useState, useEffect } from 'react'; 
 const URL = 'api/user/loggedUser';
 
@@ -8,11 +8,7 @@ function ProfilePage(props) {
 
     async function getProfile(){
         try{
-          const response = await axios.get(URL, {
-            headers: {
-              'auth-token': props.currentToken,
-            }
-          });
+          const response = tabinService.getLoggedUser(props.currentToken);
           setUserData(response.data);
         }catch(err){
           console.log(err);

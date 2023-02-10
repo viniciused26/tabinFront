@@ -12,6 +12,9 @@ const tabinTheme = createTheme({
     secondary: {
       main: '#e8b122'
     },
+    other: {
+      main: '#ec7534'
+    },
   },
   typography: {
     fontFamily: [
