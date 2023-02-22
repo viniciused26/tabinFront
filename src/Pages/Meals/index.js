@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./styles.css";
-import { tabinService } from "../Services/tabinService";
-import Menu from "../Components/menu.js";
+import { tabinService } from "../../Services/tabinService";
+import Menu from "../../Components/menu.js";
+import { Page, Container } from "./style.js";
 import { Box, Button } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 const RESTAURANT_URL = 'api/restaurant/listByOwner';
 
-function RestaurantPage(props) {
+const MealsPage = (props) => {
 
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
@@ -37,7 +37,7 @@ function RestaurantPage(props) {
 
   async function getRestaurant(){
         try{
-          const response = tabinService.getOwnerRestaurant(props.currentToken);
+          const response = await tabinService.getOwnerRestaurant(props.currentToken);
           setRestaurantData(response);
         }catch(err){
           console.log(err);
@@ -59,22 +59,16 @@ function RestaurantPage(props) {
   }
 
   return(
-    <Box>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList aria-label='Tabs example' onChange={handleChange} centered>
-          <Tab label='Cardápio' value='1' />
-          <Tab label='Mesas' value='2' />
-        </TabList>
-        </Box>
-        <TabPanel value='1'><Menu currentToken={props.currentToken}/></TabPanel>
-        <TabPanel value='2'>Mesas</TabPanel>
-      </TabContext>
-    </Box>
+    <Page>
+      <Container>
+        <Menu currentToken={props.currentToken} restaurant={restaurantData.name} />
+      </Container>
+    </Page>
+    
   );
 
   
 }
 
-export default RestaurantPage;
+export { MealsPage };
 

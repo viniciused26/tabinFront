@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material';
 
-const tabinTheme = createTheme({
+let tabinTheme = createTheme({
   palette: {
     primary: {
       main: '#551f5f'
@@ -25,10 +25,18 @@ const tabinTheme = createTheme({
       fontWeight: 'bold'
     },
     h3: {
-      fontStyle: ''
+      fontWeight: 'bold'
+    },
+    h4: {
+      fontWeight: 'bold'
+    },
+    subtitle1: {
+      fontWeight: 'regular'
     }
   }
-})
+});
+
+tabinTheme = responsiveFontSizes(tabinTheme);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

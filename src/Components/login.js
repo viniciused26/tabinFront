@@ -1,18 +1,34 @@
 import { Modal, Box } from "@mui/material";
-import Dialog from '@mui/material/Dialog';
-import { AppBar, Toolbar, ThemeProvider } from '@mui/material';
+import { AppBar, Toolbar } from '@mui/material';
 import { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import { tabinService } from "../Services/tabinService";
 import '../styles/login.css';
 import { Button } from "@mui/material"; 
 import Logo from '../assets/logo.png';
-import LandingDesktop from './landingDesktop';
+import { LandingPage } from '../Pages/Landing';
 
 const LOGIN_URL = 'auth/login';
 
 
 export default function Login({setToken}) {
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
 
   const modalStyle = {
     position: 'absolute',
@@ -58,7 +74,7 @@ export default function Login({setToken}) {
     e.preventDefault();
 
     try{
-      const response = tabinService.login(email, password);
+      const response = await tabinService.login(email, password);
       setToken(response);
     }catch(err){
       console.log("ERRO: ", err);
@@ -69,14 +85,31 @@ export default function Login({setToken}) {
     <div>
         <AppBar position="sticky" color="primary">              
           <Toolbar sx={{justifyContent: "space-between"}}>
-            <img src={Logo} className="logo-navbar"/>
-            <div>
-              <Button color="secondary" variant="outlined" disableElevation onClick={handleClickFirst} sx={{marginRight: 3}}>Já sou parceiro</Button>
-              <Button color="secondary" variant="contained" disableElevation onClick={handleClickSecond}>Quero fazer parte</Button>
+            <img src={Logo} className="logo-navbar" />
+            <div style={windowSize[0] < 380 ? { display: "grid" }: null} >
+              <Button 
+                color="secondary" 
+                variant="outlined" 
+                disableElevation 
+                onClick={handleClickFirst}
+                sx={windowSize[0] >= 380 ? {marginRight: 3} : null }
+                style={windowSize[0] < 768 ? {marginBottom: "5%", marginTop: "5%"} : null}
+              > 
+                { windowSize[0] < 768 ? "entrar" : "já sou parceiro"}
+              </Button>
+              <Button 
+                color="secondary" 
+                variant="contained" 
+                disableElevation 
+                onClick={handleClickSecond}
+                style={windowSize[0] < 768 ? {marginBottom: "5%", marginTop: "5%"} : null}
+              >
+                { windowSize[0] < 768 ? "inscrever-se" : "quero fazer parte"}
+              </Button>
             </div>
           </Toolbar> 
         </AppBar>
-        <LandingDesktop/>
+        <LandingPage/>
         <Modal
           open={openFirst}
           onClose={handleCloseFirst}

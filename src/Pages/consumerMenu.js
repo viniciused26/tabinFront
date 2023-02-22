@@ -24,7 +24,7 @@ export default function ConsumerMenu(props) {
 
   async function getMeals(){
     try{
-      const response = tabinService.getRestaurantMeals(props.restaurant);
+      const response = await tabinService.getOwnerRestaurant(props.restaurant);
       setMeals(response);
     }catch(err){
       console.log(err);

@@ -16,9 +16,8 @@ const ManagerCard = (props) => {
         return(
             <Card sx={{ minWidth: 200 }} style={cardStyle}>
                 <CardContent>
-                    <h2>Nome da Silva</h2>
-                    <p>E-mail</p>
-                    <p>Data que foi cadastrado</p>
+                    <h2>{props.name}</h2>
+                    <p>{props.email}</p>
                 </CardContent>
                 <CardActions>
                     <Button style={{ border: "2px solid" }} variant="outlined">Excluir</Button>

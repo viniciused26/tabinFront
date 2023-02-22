@@ -2,9 +2,11 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import { Link } from 'react-router-dom';
-import { AppBar, Drawer, createTheme, ThemeProvider } from '@mui/material';
+import { AppBar, Box, Drawer, createTheme, ThemeProvider, Button } from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Logo from '../assets/logo.png';
 import './styles.css';
 
@@ -22,22 +24,47 @@ export default function Navbar(props) {
   if (isHomepage) {
     return (
       <ThemeProvider theme={tabinTheme}>
+        <Box>
         <AppBar position="static" color="primary">              
         <Toolbar>
           <img src={Logo} className="logo-navbar"/>
         </Toolbar> 
         </AppBar>
+        </Box>
       </ThemeProvider>
     );
   }
-
+  
   return (
     <ThemeProvider theme={tabinTheme}>
+      <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="primary">              
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: "space-between"}}>
           <img src={Logo} className="logo-navbar"/>
+          <div>
+            <Button style={{ color: "white" }}> <Link to="/" style={{ color: 'inherit', textDecoration: 'none'}}> Restaurante </Link> </Button>
+            <Button style={{ color: "white" }}> <Link to="/mealsPage" style={{ color: 'inherit', textDecoration: 'none'}}> Refeições </Link> </Button>
+            <Button style={{ color: "white" }}> Mesas </Button>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              color="inherit"
+            >
+              <AccountCircle/>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="notifications of current user"
+              aria-controls="menu-appbar"
+              color="inherit"
+            >
+              <NotificationsIcon/>
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
+      </Box>
     </ThemeProvider>
   ); 
 }

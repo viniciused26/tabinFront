@@ -31,7 +31,7 @@ export default function AddMeals( props, setOpenDialog ) {
     };
 
     try{
-      const response = tabinService.newMeal(mealData, props.currentToken)
+      const response = await tabinService.newMeal(mealData, props.currentToken)
     }catch(err){
       console.log(err);
     }
@@ -39,9 +39,9 @@ export default function AddMeals( props, setOpenDialog ) {
 
   async function getMealTypes(){
     try{
-      const response = tabinService.getMealTypes(props.currentToken);
-      response.data.unshift('Definir categoria');
-      setTypes(response.data);
+      const response = await tabinService.getMealTypes(props.currentToken);
+      response.unshift('Definir categoria');
+      setTypes(response);
       
     }catch(err){
       console.log(err);

@@ -10,8 +10,13 @@ const tabinService = {
         
         return res.data;
     },
+    getMealsOfRestaurant: async(restaurantName) => {
+        const res = await tabinAPI.get(`/meal/listRestaurantMeals/${restaurantName}`);
+        
+        return res.data;
+    },
     newMeal: async(mealData, token) => {
-        const res = await tabinAPI.post("/restaurant/getMealTypes", mealData, {
+        const res = await tabinAPI.post("/meal/register", mealData, {
             headers: {
                 'auth-token': token,
             }
@@ -48,6 +53,24 @@ const tabinService = {
     },
     getLoggedUser: async(token) => {
         const res = await tabinAPI.get("/user/loggedUser", {
+            headers: {
+                'auth-token': token,
+            }
+        });
+
+        return res.data;
+    },
+    registerUser: async(token) => {
+        const res = await tabinAPI.get("/user/loggedUser", {
+            headers: {
+                'auth-token': token,
+            }
+        });
+
+        return res.data;
+    },
+    getRestaurantManger: async(token) => {
+        const res = await tabinAPI.get("/restaurant/getManagerInfo", {
             headers: {
                 'auth-token': token,
             }

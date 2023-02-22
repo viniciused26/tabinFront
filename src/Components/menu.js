@@ -27,8 +27,7 @@ export default function Menu(props) {
 
   async function getMeals(){
     try{
-      const response = await tabinService.getMeals(props.currentToken);
-      
+      const response = await tabinService.getMealsOfRestaurant(props.restaurant);
       setMeals(response);
       
     }catch(err){
@@ -42,12 +41,11 @@ export default function Menu(props) {
 
   return (
     <div>
-
         <Grid container spacing={3}>
         {meals.map((meal) => {
           return(
             <Grid item xs={12} sm={3}>
-      <Card>
+      <Card style={{ background: "#b2aabd"}}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
             {meal.name}
