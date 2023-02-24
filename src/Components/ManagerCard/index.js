@@ -1,4 +1,4 @@
-import { Card, CardActions, CardContent, Button, IconButton } from "@mui/material";
+import { Card, CardActions, CardContent, Button, Typography } from "@mui/material";
 import { DeleteIcon } from "@mui/icons-material";
 
 const ManagerCard = (props) => {
@@ -16,8 +16,8 @@ const ManagerCard = (props) => {
         return(
             <Card sx={{ minWidth: 200 }} style={cardStyle}>
                 <CardContent>
-                    <h2>{props.name}</h2>
-                    <p>{props.email}</p>
+                    <Typography variant={"h4"}>{props.name}</Typography>
+                    <Typography variant={"subtitle2"}>{props.email}</Typography>
                 </CardContent>
                 <CardActions>
                     <Button style={{ border: "2px solid" }} variant="outlined">Excluir</Button>

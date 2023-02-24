@@ -69,7 +69,6 @@ export default function Login({setToken}) {
   const [password, setPassword] = useState('');
 
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from 'react-router-dom';
 import { ManagerCard } from "../../Components/ManagerCard"
 import { Page, Container, CardContainer } from "./style.js";
-import { Card, CardActions, CardContent, Button } from "@mui/material";
+import { Card, CardActions, CardContent, Button, Typography } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -15,7 +15,7 @@ const RestaurantPage = (props) => {
 
   async function getManagerInfo(){
     try{
-      const response = await tabinService.getRestaurantManger(props.currentToken);
+      const response = await tabinService.getRestaurantManager(props.currentToken);
       setManager(response);
     }catch(err){
       console.log(err);
@@ -29,7 +29,11 @@ const RestaurantPage = (props) => {
 
   return(
     <Page>
-        <Container><h1>Gerentes</h1></Container>
+        <Container>
+          <Typography variant={"h3"} style={{marginBottom: "1%"}}>
+            Gerentes
+          </Typography>
+        </Container>
         <CardContainer>
           {manager.length != 0 ? 
             <ManagerCard newManager={true} name={manager.name} email={manager.email} /> :

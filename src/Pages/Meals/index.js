@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { tabinService } from "../../Services/tabinService";
 import Menu from "../../Components/menu.js";
 import { Page, Container } from "./style.js";
-import { Box, Button } from "@mui/material";
+import { Typography } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -37,7 +37,7 @@ const MealsPage = (props) => {
 
   async function getRestaurant(){
         try{
-          const response = await tabinService.getOwnerRestaurant(props.currentToken);
+          const response = await tabinService.getRestaurantIdByOwner(props.currentToken);
           setRestaurantData(response);
         }catch(err){
           console.log(err);
@@ -61,6 +61,9 @@ const MealsPage = (props) => {
   return(
     <Page>
       <Container>
+        <Typography variant={"h3"} style={{marginBottom: "1%"}}>
+          Meu cardápio
+        </Typography>
         <Menu currentToken={props.currentToken} restaurant={restaurantData.name} />
       </Container>
     </Page>

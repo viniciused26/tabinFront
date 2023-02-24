@@ -24,8 +24,13 @@ export default function ConsumerMenu(props) {
 
   async function getMeals(){
     try{
-      const response = await tabinService.getOwnerRestaurant(props.restaurant);
-      setMeals(response);
+      if(props.mealType == ""){
+        const response = await tabinService.getRestaurantMeals(props.restaurant);
+        setMeals(response);
+      } else {
+        const response = await tabinService.getRestaurantMealsByType(props.restaurant, props.mealType);
+        setMeals(response);
+      }
     }catch(err){
       console.log(err);
     }
@@ -41,38 +46,38 @@ export default function ConsumerMenu(props) {
         {meals.map((meal) => {
           return(
             <Grid item xs={12} sm={3}>
-      <Card>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-            {meal.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-            {meal.description}
-        </Typography>
-        <br/>
-        <Typography style={{textDecoration: 'line-through'}} variant="body2" color="text.secondary" >
-            R$ {meal.standartPrice}
-        </Typography>
-        <Typography variant="body2" color="text.primary" >
-            R$ {meal.discountPrice}
-        </Typography>
-        <Typography variant="body1" color="text.primary" >
-            Serve: {meal.peopleItServes} pessoas
-        </Typography>   
-    </CardContent>
-    <CardActions>
-        
-    </CardActions>
-    </Card>
-    </Grid>
-    );
-  })}
+              <Card style={{ background: "#b2aabd"}}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                      {meal.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                      {meal.description}
+                  </Typography>
+                  <br/>
+                  <Typography style={{textDecoration: 'line-through'}} variant="body2" color="text.secondary" >
+                      R$ {meal.standartPrice}
+                  </Typography>
+                  <Typography variant="body2" color="text.primary" >
+                      R$ {meal.discountPrice}
+                  </Typography>
+                  <Typography variant="body1" color="text.primary" >
+                      Serve: {meal.peopleItServes} pessoas
+                  </Typography>   
+                </CardContent>
+                <CardActions>  
+                </CardActions>
+              </Card>
+            </Grid>
+          );
+          
+        })}
         </Grid>
-        <Fab color="secondary" style={style} onClick={() => { setOpenDialog(true) }}>
+        {/* <Fab color="secondary" style={style} onClick={() => { setOpenDialog(true) }}>
           <p>0</p>
           <ShoppingCartIcon/>
-        </Fab>
-  </div>
+        </Fab> */}
+    </div>
   );
   
   

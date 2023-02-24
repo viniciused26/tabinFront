@@ -7,6 +7,7 @@ import { Box, Button } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import Navbar from "../Components/navbar";
 
 
 function ConsumerPage(props) {
@@ -14,7 +15,7 @@ function ConsumerPage(props) {
   const { restaurant } = useParams();
 
   const [restaurantData, setRestaurantData] = useState();
-  const [value, setValue] = useState('1');
+  const [value, setValue] = useState('0');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -24,7 +25,8 @@ function ConsumerPage(props) {
   async function getRestaurant(){
         try{
           const response = await tabinService.getRestaurantByName(restaurant);
-          setRestaurantData(response.data);
+          console.log(response);
+          setRestaurantData(response);
         }catch(err){
           console.log(err);
         }
@@ -37,18 +39,28 @@ function ConsumerPage(props) {
 
   return(
     <Box>
+      <Navbar isHomepage={true} />
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <TabList aria-label='Tabs example' onChange={handleChange} centered>
-          <Tab label='Todos' value='1' />
+          <Tab label='Todos' value='0' />
           {restaurantData ? restaurantData.mealTypes.map((type, index) => {
+            let newTabValue = index+1
+            newTabValue = newTabValue.toString()
             return(
-              <Tab label={type} value={index} />
+              <Tab label={type} value={newTabValue} />
             );
-          }) : null}
+          }) : null }
         </TabList>
         </Box>
-        <TabPanel value='1'><ConsumerMenu restaurant={restaurant}/></TabPanel>
+        <TabPanel value='0'><ConsumerMenu restaurant={restaurant} mealType={""} /></TabPanel>
+        {restaurantData ? restaurantData.mealTypes.map((type, index) => {
+            let tabValue = index+1
+            tabValue = tabValue.toString()
+            return(
+              <TabPanel value={tabValue} ><ConsumerMenu restaurant={restaurant} mealType={type} /></TabPanel>
+            );
+          }) : null }
       </TabContext>
     </Box>
   );

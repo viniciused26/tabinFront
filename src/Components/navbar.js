@@ -43,8 +43,8 @@ export default function Navbar(props) {
           <img src={Logo} className="logo-navbar"/>
           <div>
             <Button style={{ color: "white" }}> <Link to="/" style={{ color: 'inherit', textDecoration: 'none'}}> Restaurante </Link> </Button>
-            <Button style={{ color: "white" }}> <Link to="/mealsPage" style={{ color: 'inherit', textDecoration: 'none'}}> Refeições </Link> </Button>
-            <Button style={{ color: "white" }}> Mesas </Button>
+            <Button style={{ color: "white" }}> <Link to="/mealsPage" style={{ color: 'inherit', textDecoration: 'none'}}> Cardápio </Link> </Button>
+            <Button style={{ color: "white" }}> <Link to="/tablesPage" style={{ color: 'inherit', textDecoration: 'none'}}> Mesas </Link> </Button>
             <IconButton
               size="large"
               aria-label="account of current user"

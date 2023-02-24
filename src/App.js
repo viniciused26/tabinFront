@@ -11,6 +11,7 @@ import ProfilePage from "./Pages/profile";
 import ConsumerPage from "./Pages/consumerPage";
 import { RestaurantPage } from "./Pages/Restaurant"
 import { MealsPage } from "./Pages/Meals"
+import { TablesPage } from "./Pages/Tables"
 
 
 import useToken from './useToken';
@@ -21,7 +22,17 @@ function App() {
   const { token, setToken } = useToken();
 
   if(!token){
-    return <Login setToken={setToken}/>
+    return(
+      <div className="wrapper">
+      <Router>
+          <Routes>
+            <Route path="/" element={<Login setToken={setToken} />} />
+            <Route path="/consumerPage/:restaurant/" element={<ConsumerPage />} />
+          </Routes>
+      </Router>
+      </div>
+    ); 
+    // <Login setToken={setToken}/>
   }
 
   return(
@@ -31,9 +42,9 @@ function App() {
         <Routes>
           <Route path="/" element={<RestaurantPage currentToken={token} />} />
           <Route path="/mealsPage" element={<MealsPage currentToken={token} />} />
+          <Route path="/tablesPage" element={<TablesPage currentToken={token} />} />
           <Route path="/createRestaurant" element={<CreateRestaurantPage/>} />
           <Route path="/profilePage" element={<ProfilePage currentToken={token}/>} />
-          <Route path="/consumerPage/:restaurant/:tableId" element={<ConsumerPage />} />
         </Routes>
     </Router>
     </div>

@@ -63,11 +63,9 @@ export default function Menu(props) {
         <Typography variant="body1" color="text.primary" >
             Serve: {meal.peopleItServes} pessoas
         </Typography>   
-    </CardContent>
-    <CardActions>
-        
-    </CardActions>
-    </Card>
+      </CardContent>
+      <CardActions />
+      </Card>
     </Grid>
     );
   })}
