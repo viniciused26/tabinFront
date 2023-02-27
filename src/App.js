@@ -27,7 +27,7 @@ function App() {
       <Router>
           <Routes>
             <Route path="/" element={<Login setToken={setToken} />} />
-            <Route path="/consumerPage/:restaurant/" element={<ConsumerPage />} />
+            <Route path="/consumerPage/:restaurant/:table" element={<ConsumerPage />} />
           </Routes>
       </Router>
       </div>

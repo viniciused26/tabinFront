@@ -110,6 +110,11 @@ const tabinService = {
 
         return res.data;
     },
+    askHelp: async(restaurant, table) => {
+        const res = await tabinAPI.post(`/table/askService/${restaurant}/${table}`);
+
+        return res.data;
+    },
 
 }
 

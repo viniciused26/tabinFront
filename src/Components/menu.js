@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Grid, Typography, Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import RoomServiceIcon from '@mui/icons-material/RoomService';
 import { makeStyles } from '@mui/material/styles';
 import { tabinService } from "../Services/tabinService";
 import AddMeals from "./addMeals.js";
@@ -71,7 +71,7 @@ export default function Menu(props) {
   })}
         </Grid>
         <Fab color="secondary" style={style} onClick={() => { setOpenDialog(true) }}>
-          <AddIcon/>
+          <RoomServiceIcon/>
         </Fab>
         <AddMeals openDialog={openDialog} setOpenDialog={setOpenDialog} currentToken={props.currentToken}/>
   </div>

@@ -1,29 +1,73 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Page, Container, CardContainer } from "./style.js";
 import { TableCard } from "../../Components/TableCard"
-import { Card, CardActions, Box, Modal, Typography } from "@mui/material";
+import { Card, CardActions, Box, Modal, Typography, Button } from "@mui/material";
 import { tabinService } from "../../Services/tabinService";
+import QRCode from 'react-qr-code';
+import QRCodeLink from 'qrcode';
+import FrameQR from '../../assets/frameQR.png';
+import downloadjs from 'downloadjs';
+import html2canvas from 'html2canvas';
 
 
 const TablesPage = (props) => {
   const [tables, setTables] = useState([]);
 
   const modalStyle = {
-    position: 'absolute',
+    position: 'relative',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
+    textAlign: 'center',
     p: 4,
+  };
+
+  const modalStyleQR = {
+    position: 'relative',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    textAlign: 'center',
+    p: 4,
+    backgroundColor: '#2e1133',
   };
 
 
   const [open, setOpen] = useState(false);
+  const [qrModal, setQrModal] = useState(false);
+  const [qrLink, setQrLink] = useState('');
   
   const handleClick = () => {
+    setQrModal(false);
+    setOpen(true);
+  }
+
+  const handleQRDownload = async () => {
+    const qrCodeElement = document.getElementById('imageFile');
+    if (!qrCodeElement) return;
+    
+    console.log("oik")
+    const canvas = await html2canvas(qrCodeElement);
+    const dataURL = canvas.toDataURL('image/png');
+    downloadjs(dataURL, 'qrCode_mesax', 'image/png')
+  }
+
+  const handleQRClick = (ident) => {
+    let link = `http://localhost:3002/consumerPage/${restaurantName}/${ident}`;
+    QRCodeLink.toDataURL(link, {
+      width: 600,
+      margin: 3,
+    }, function(err,url){
+      setQrLink(url);
+    });
+
+    setQrModal(true);
     setOpen(true);
   }
 
@@ -35,6 +79,7 @@ const TablesPage = (props) => {
 
   const [ident, setIdent] = useState('');
   const [restaurant, setRestaurant] = useState('');
+  const [restaurantName, setRestaurantName] = useState('');
 
 
   const handleSubmit = async (e) => {
@@ -51,6 +96,7 @@ const TablesPage = (props) => {
     try{
       const response = await tabinService.getRestaurantIdByOwner(props.currentToken);
       setRestaurant(response?._id);
+      setRestaurantName(response?.name);
     }catch(err){
       console.log(err);
     }
@@ -84,7 +130,7 @@ const TablesPage = (props) => {
         <CardContainer>
           {tables.map((table) => {
             return(
-              <TableCard newTable={false} identifier={table.identifier} owner={""} help={table.isAskingHelp} onClick={handleClick}/>
+              <TableCard newTable={false} identifier={table.identifier} owner={""} help={table.isAskingHelp} qrCodeClick={handleQRClick}/>
             );
           })}
           <TableCard newTable={true} identifier={"1"} owner={""} help={true} onClick={handleClick}/>
@@ -93,23 +139,33 @@ const TablesPage = (props) => {
           open={open}
           onClose={handleClose}
         >
-          <Box sx={modalStyle}>
-          <form onSubmit={handleSubmit}>
-            <div>
-              Identificador:
-              <input 
-                type="number" 
-                id="ident" 
-                ref={identRef} 
-                autoComplete="off" 
-                onChange={(e) => setIdent(e.target.value)} 
-                value={ident}
-                required 
-              />
-            </div>
-            <button type="submit"> ENVIAR </button>
-          </form>
-          </Box>
+          { !qrModal ?
+            <Box sx={modalStyle}>
+            <form onSubmit={handleSubmit}>
+              <div>
+                Identificador:
+                <input
+                  type="number" 
+                  id="ident" 
+                  ref={identRef} 
+                  autoComplete="off" 
+                  onChange={(e) => setIdent(e.target.value)} 
+                  value={ident}
+                  required 
+                />
+              </div>
+              <button type="submit"> ENVIAR </button>
+            </form>
+            </Box>
+           : 
+            <Box sx={modalStyleQR}>
+              <div id='imageFile'>
+                <img alt="qrcode" src={FrameQR} style={{width: "100%", position: 'relative', top: 0, left: 0}} />
+                <img alt="qrcode" src={qrLink} style={{width: "70%", position: 'absolute', top: '16.5%', left: '15%'}} />
+              </div>
+              <Button onClick={handleQRDownload} variant="contained" color="primary" style={{ marginTop: "5%"}}>Baixar QR Code</Button>
+            </Box>
+          }
         </Modal>
     </Page>
   );
