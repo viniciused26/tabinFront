@@ -39,7 +39,16 @@ const MealsPage = (props) => {
         try{
           const response = await tabinService.getRestaurantIdByOwner(props.currentToken);
           setRestaurantData(response);
+            
         }catch(err){
+          if (err.response.data === "This owner has no restaurants!"){
+            try {
+              const response = await tabinService.getRestaurantIdByManager(props.currentToken);
+              setRestaurantData(response);
+            } catch (err) {
+              console.log(err);
+            }
+          }
           console.log(err);
         }
     }

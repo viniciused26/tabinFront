@@ -12,12 +12,26 @@ const RESTAURANT_URL = 'api/restaurant/listByName';
 
 const RestaurantPage = (props) => {
   const [manager, setManager] = useState([]);
+  const [isManager, setIsManager] = useState(false);
+  const [hasRestaurant, setHasRestaurant] = useState(false);
+  const [restaurant, setRestaurant] = useState([]);
 
   async function getManagerInfo(){
     try{
-      const response = await tabinService.getRestaurantManager(props.currentToken);
-      setManager(response);
+      const response = await tabinService.getRestaurantIdByOwner(props.currentToken);
+      setManager(response?.manager);
+      setHasRestaurant(true);
     }catch(err){
+      if (err.response.data === "This owner has no restaurants!"){
+        try {
+          const response = await tabinService.getRestaurantIdByManager(props.currentToken);
+          setRestaurant(response);
+          setIsManager(true);
+          setHasRestaurant(true);
+        } catch (err) {
+          console.log(err);
+        }
+      }
       console.log(err);
     }
   }
@@ -27,10 +41,40 @@ const RestaurantPage = (props) => {
     console.log(manager);
   }, []);
 
+  if(!hasRestaurant){
+    return (
+      <Page>
+        <Container>
+          <Typography variant={"h3"} style={{marginBottom: "1%"}}>
+            VOCÊ NÃO ESTÁ ATRELADO A NENHUM RESTAURANTE!
+          </Typography>
+          <Typography variant={"subtitle2"} style={{marginBottom: "1%"}}>
+            Crie um restaurante ou peça para ser gerente ao seu chefe!
+          </Typography>
+        </Container>
+      </Page>
+    );
+  } 
+
+  if(isManager){
+    return (
+      <Page>
+        <Container>
+          <Typography variant={"h3"} style={{marginBottom: "1%"}}>
+            RESTAURANT NAME
+          </Typography>
+        </Container>
+      </Page>
+    );
+  } 
+
   return(
     <Page>
         <Container>
           <Typography variant={"h3"} style={{marginBottom: "1%"}}>
+            RESTAURANT NAME
+          </Typography>
+          <Typography variant={"h4"} style={{marginBottom: "1%"}}>
             Gerentes
           </Typography>
         </Container>

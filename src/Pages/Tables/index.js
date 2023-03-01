@@ -98,6 +98,15 @@ const TablesPage = (props) => {
       setRestaurant(response?._id);
       setRestaurantName(response?.name);
     }catch(err){
+      if (err.response.data === "This owner has no restaurants!"){
+        try {
+          const response = await tabinService.getRestaurantIdByManager(props.currentToken);
+          setRestaurant(response?._id);
+          setRestaurantName(response?.name);
+        } catch (err) {
+          console.log(err);
+        }
+      }
       console.log(err);
     }
   }
@@ -119,6 +128,16 @@ const TablesPage = (props) => {
     getTables();
     console.log("aqui", tables)
   }, [restaurant]);
+
+  if(!restaurant){
+    return (
+      <div className="App">
+        <center>
+          <p>VOCÊ NÃO TEM RESTAURANTE!</p>
+        </center>        
+      </div>
+    );
+  }
 
   return(
     <Page>

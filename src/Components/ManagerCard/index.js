@@ -21,7 +21,6 @@ const ManagerCard = (props) => {
                 </CardContent>
                 <CardActions>
                     <Button style={{ border: "2px solid" }} variant="outlined">Excluir</Button>
-                    <Button style={{ border: "2px solid" }} variant="outlined">Mensagem</Button>
                 </CardActions>
             </Card>
     

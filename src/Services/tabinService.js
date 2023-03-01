@@ -74,6 +74,15 @@ const tabinService = {
 
         return res.data;
     },
+    getRestaurantIdByManager: async(token) => {
+        const res = await tabinAPI.get("/restaurant/getRestaurantIdByManager", {
+            headers: {
+                'auth-token': token,
+            }
+        });
+
+        return res.data;
+    },
     listRestaurantTables: async(restaurant) => {
         const res = await tabinAPI.get(`/table/listRestaurantTables/${restaurant}`);
 
