@@ -1,18 +1,17 @@
-import { Modal, Box } from "@mui/material";
-import { AppBar, Toolbar } from '@mui/material';
+import { Modal, Box, Checkbox, Typography } from "@mui/material";
+import { AppBar, Toolbar, TextField } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { tabinService } from "../Services/tabinService";
-import '../styles/login.css';
-import { Button } from "@mui/material"; 
-import Logo from '../assets/logo.png';
-import { LandingPage } from '../Pages/Landing';
+import "../styles/login.css";
+import { Button } from "@mui/material";
+import Logo from "../assets/logo.png";
+import { LandingPage } from "../Pages/Landing";
+import { typography } from "@mui/system";
 
-const LOGIN_URL = 'auth/login';
+const LOGIN_URL = "auth/login";
 
-
-export default function Login({setToken}) {
-
+export default function Login({ setToken }) {
   const [windowSize, setWindowSize] = useState([
     window.innerWidth,
     window.innerHeight,
@@ -23,170 +22,251 @@ export default function Login({setToken}) {
       setWindowSize([window.innerWidth, window.innerHeight]);
     };
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
   });
 
   const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
   };
 
-
   const [openFirst, setOpenFirst] = useState(false);
-  
+
   const handleClickFirst = () => {
     setOpenFirst(true);
-  }
+  };
 
   const handleCloseFirst = () => {
     setOpenFirst(false);
-  }
-  
+  };
+
   const [openSecond, setOpenSecond] = useState(false);
 
   const handleClickSecond = () => {
     setOpenSecond(true);
-  }
+  };
 
   const handleCloseSecond = () => {
     setOpenSecond(false);
-  }
+  };
 
   const emailRef = useRef();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const [name, setName] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try{
+    try {
       const response = await tabinService.login(email, password);
       setToken(response);
-    }catch(err){
+    } catch (err) {
       console.log("ERRO: ", err);
     }
-  } 
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const registerData = {
+      name: name,
+      email: email,
+      password: password,
+      phone: phone,
+    };
+
+    if (password !== passwordCheck) {
+      console.log("As senhas não coincidem!", password, passwordCheck);
+      return;
+    }
+
+    try {
+      const response = await tabinService.registerUser(registerData);
+    } catch (err) {
+      console.log("ERRO: ", err);
+    }
+  };
 
   return (
     <div>
-        <AppBar position="sticky" color="primary">              
-          <Toolbar sx={{justifyContent: "space-between"}}>
-            <img src={Logo} className="logo-navbar" />
-            <div style={windowSize[0] < 380 ? { display: "grid" }: null} >
-              <Button 
-                color="secondary" 
-                variant="outlined" 
-                disableElevation 
-                onClick={handleClickFirst}
-                sx={windowSize[0] >= 380 ? {marginRight: 3} : null }
-                style={windowSize[0] < 768 ? {marginBottom: "5%", marginTop: "5%"} : null}
-              > 
-                { windowSize[0] < 768 ? "entrar" : "já sou parceiro"}
-              </Button>
-              <Button 
-                color="secondary" 
-                variant="contained" 
-                disableElevation 
-                onClick={handleClickSecond}
-                style={windowSize[0] < 768 ? {marginBottom: "5%", marginTop: "5%"} : null}
-              >
-                { windowSize[0] < 768 ? "inscrever-se" : "quero fazer parte"}
-              </Button>
-            </div>
-          </Toolbar> 
-        </AppBar>
-        <LandingPage/>
-        <Modal
-          open={openFirst}
-          onClose={handleCloseFirst}
-        >
-          <Box sx={modalStyle}>
+      <AppBar position="sticky" color="primary">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <img alt="logo" src={Logo} className="logo-navbar" />
+          <div style={windowSize[0] < 380 ? { display: "grid" } : null}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              disableElevation
+              onClick={handleClickFirst}
+              sx={windowSize[0] >= 380 ? { marginRight: 3 } : null}
+              style={
+                windowSize[0] < 768
+                  ? { marginBottom: "5%", marginTop: "5%" }
+                  : null
+              }
+            >
+              {windowSize[0] < 768 ? "entrar" : "já sou parceiro"}
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              disableElevation
+              onClick={handleClickSecond}
+              style={
+                windowSize[0] < 768
+                  ? { marginBottom: "5%", marginTop: "5%" }
+                  : null
+              }
+            >
+              {windowSize[0] < 768 ? "inscrever-se" : "quero fazer parte"}
+            </Button>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <LandingPage openRegister={handleClickSecond} />
+      <Modal open={openFirst} onClose={handleCloseFirst}>
+        <Box sx={modalStyle}>
           <form onSubmit={handleSubmit}>
             <div>
-              E-mail:
-              <input 
-                type="email" 
-                id="email" 
-                ref={emailRef} 
-                autoComplete="off" 
-                onChange={(e) => setEmail(e.target.value)} 
+              <TextField
+                type="email"
+                id="email"
+                ref={emailRef}
+                autoComplete="off"
+                label="E-mail"
+                onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                required 
+                required
+                style={{ marginBottom: "3%" }}
               />
             </div>
             <div>
-              Senha:
-              <input 
-                type="password" 
+              <TextField
+                type="password"
                 id="password"
-                onChange={(e) => setPassword(e.target.value)} 
+                onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                required 
+                label="Senha"
+                required
+                style={{ marginBottom: "3%" }}
               />
             </div>
-            <button type="submit"> ENVIAR </button>
+            <Button
+              variant="contained"
+              type="submit"
+              style={{ marginBottom: "3%" }}
+            >
+              {" "}
+              Entrar{" "}
+            </Button>
           </form>
-          </Box>
-        </Modal>
-        <Modal
-          open={openSecond}
-          onClose={handleCloseSecond}
-        >
-          <Box sx={modalStyle}>
-          <form onSubmit={handleSubmit}>
+        </Box>
+      </Modal>
+      <Modal open={openSecond} onClose={handleCloseSecond}>
+        <Box sx={modalStyle}>
+          <form onSubmit={handleRegister}>
             <div>
-              E-mail:
-              <input 
-                type="email" 
-                id="email" 
-                ref={emailRef} 
-                autoComplete="off" 
-                onChange={(e) => setEmail(e.target.value)} 
+              <TextField
+                type="string"
+                id="nome"
+                autoComplete="off"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                required
+                label="Nome completo"
+                style={{ marginBottom: "3%" }}
+              />
+            </div>
+            <div>
+              <TextField
+                type="email"
+                id="email"
+                ref={emailRef}
+                autoComplete="off"
+                onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                required 
+                required
+                label="E-mail"
+                style={{ marginBottom: "3%" }}
               />
             </div>
             <div>
-              Senha:
-              <input 
-                type="password" 
-                id="password"
-                onChange={(e) => setPassword(e.target.value)} 
-                value={password}
-                required 
+              <TextField
+                type="string"
+                id="phone"
+                autoComplete="off"
+                onChange={(e) => setPhone(e.target.value)}
+                value={phone}
+                required
+                label="Telefone com DDD"
+                style={{ marginBottom: "3%" }}
               />
             </div>
             <div>
-              Confirme senha:
-              <input 
-                type="password" 
+              <TextField
+                type="password"
                 id="password"
-                onChange={(e) => setPassword(e.target.value)} 
+                onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                required 
+                required
+                label="Senha"
+                style={{ marginBottom: "3%" }}
               />
             </div>
-            <button type="submit"> ENVIAR </button>
+            <div>
+              <TextField
+                type="password"
+                id="passwordCheck"
+                onChange={(e) => setPasswordCheck(e.target.value)}
+                value={passwordCheck}
+                required
+                label="Confirme sua senha"
+                style={{ marginBottom: "3%" }}
+              />
+            </div>
+            <div >
+              <Checkbox required id="terms" />
+              <Typography style={{display: 'inline-block'}} >
+                Li e concordo com os{" "}
+                <a href="http://tabin.com.br/termsPage"> termos de uso: </a>
+              </Typography>
+            </div>
+            <div>
+              <Checkbox required id="policy" />
+              <Typography style={{display: 'inline-block'}} >
+                Li e concordo com a{" "}
+                <a href="http://tabin.com.br/policyPage">
+                  {" "}
+                  política de privacidade:{" "}
+                </a>
+              </Typography>
+            </div>
+            <Button variant="contained" type="submit">
+              {" "}
+              CADASTRAR{" "}
+            </Button>
           </form>
-          </Box>
-        </Modal>
+        </Box>
+      </Modal>
     </div>
-  );  
+  );
 }
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired
+  setToken: PropTypes.func.isRequired,
 };

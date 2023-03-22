@@ -7,7 +7,7 @@ const Footer = (props) => {
         position: 'absolute',
         bottom: 0,
         width: 'auto',
-        height: '15%',
+        height: '20%',
       };
     
     const mobileStyle = {
@@ -34,6 +34,16 @@ const Footer = (props) => {
 
                 <Grid item xs={12}>
                     <Typography variant="subtitle2" color="white" style={{fontSize: "60%", textAlign: "left"}} >
+                        <a href="http://tabin.com.br/termsPage" style={{ textDecoration: 'none', color: 'white' }}>
+                            Termos e condições de uso.
+                        </a>
+                    </Typography>
+                    <Typography variant="subtitle2" color="white" style={{fontSize: "60%", textAlign: "left"}} >
+                        <a href="http://tabin.com.br/policyPage" style={{ textDecoration: 'none', color: 'white' }}>
+                            Política de privacidade.
+                        </a>
+                    </Typography>
+                    <Typography variant="subtitle2" color="white" style={{fontSize: "60%", textAlign: "left"}} >
                         © Copyright 2022 - Tabin - Todos os direitos reservados a Tabin Soluções em Tecnologia Ltda.
                     </Typography>
                     <div style={{ height: "10%" }}></div>
@@ -47,6 +57,16 @@ const Footer = (props) => {
         return(
             <Grid container spacing={12} rowSpacing={8} style={style}>
                 <Grid item xs={6}>
+                    <Typography variant="subtitle2" color="white" style={{textAlign: "left"}} >
+                        <a href="http://tabin.com.br/termsPage" style={{ textDecoration: 'none', color: 'white' }}>
+                            Termos e condições de uso.
+                        </a>
+                    </Typography>
+                    <Typography variant="subtitle2" color="white" style={{textAlign: "left"}} >
+                        <a href="http://tabin.com.br/policyPage" style={{ textDecoration: 'none', color: 'white' }}>
+                            Política de privacidade.
+                        </a>
+                    </Typography>
                     <Typography variant="subtitle2" color="white" style={{textAlign: "left"}} >
                         © Copyright 2022 - Tabin - Todos os direitos reservados a Tabin Soluções em Tecnologia Ltda.
                     </Typography>

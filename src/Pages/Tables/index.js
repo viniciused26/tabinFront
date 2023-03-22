@@ -59,7 +59,7 @@ const TablesPage = (props) => {
   }
 
   const handleQRClick = (ident) => {
-    let link = `http://localhost:3002/consumerPage/${restaurantName}/${ident}`;
+    let link = `http://tabin.com.br/consumerPage/${restaurantName}/${ident}`;
     QRCodeLink.toDataURL(link, {
       width: 600,
       margin: 3,

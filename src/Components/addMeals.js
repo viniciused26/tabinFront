@@ -3,11 +3,13 @@ import Dialog from '@mui/material/Dialog';
 import { useState, useEffect, useRef } from "react";
 import { tabinService } from "../Services/tabinService";
 import '../styles/login.css'; 
+import FormData from 'form-data';
 const MEAL_URL = 'api/meal/register';
 
 export default function AddMeals( props, setOpenDialog ) {
 
   const [name, setName] = useState('');
+  const [img, setImg] = useState(null);
   const [standartPrice, setStandartPrice] = useState();
   const [discountPrice, setDiscountPrice] = useState();
   const [description, setDescription] = useState('');
@@ -15,20 +17,29 @@ export default function AddMeals( props, setOpenDialog ) {
   const [types, setTypes] = useState([]);
   const [currentType, setCurrentType] = useState('Definir categoria');
   const [newType, setNewType] = useState('');
-
-  const [open, setOpen] = useState(false);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const mealData = { 
-      name: name, 
-      standartPrice: standartPrice,
-      discountPrice: discountPrice,
-      description: description,
-      peopleItServes: peopleItServes,
-      type: newType ? newType : currentType,
-    };
+    const mealData = new FormData();
+
+    mealData.append("name", name);
+    mealData.append("standartPrice", standartPrice);
+    mealData.append("discountPrice", discountPrice);
+    mealData.append("description", description);
+    mealData.append("peopleItServes", peopleItServes);
+    mealData.append("type", newType ? newType : currentType);
+    mealData.append("image", img);
+
+    // const mealData = { 
+    //   name: name, 
+    //   standartPrice: standartPrice,
+    //   discountPrice: discountPrice,
+    //   description: description,
+    //   peopleItServes: peopleItServes,
+    //   type: newType ? newType : currentType,
+    //   img: img,
+    // };
 
     try{
       const response = await tabinService.newMeal(mealData, props.currentToken)
@@ -159,6 +170,17 @@ export default function AddMeals( props, setOpenDialog ) {
           <br/>
           <br/>
 
+          <span>imagem: </span>
+          <input 
+            type='file' 
+            name='image'
+            id='image' 
+            onChange={(e) => setImg(e.target.files[0])}
+            required 
+          /> 
+          
+          <br/>
+          <br/>
          
           <span/> <button type="submit">enviar</button>
         </form>

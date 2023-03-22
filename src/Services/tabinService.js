@@ -15,13 +15,50 @@ const tabinService = {
         
         return res.data;
     },
-    newMeal: async(mealData, token) => {
-        const res = await tabinAPI.post("/meal/register", mealData, {
+    newRestaurant: async(restaurantData, token) => {
+        const res = await tabinAPI.post("/restaurant/register", restaurantData, {
             headers: {
                 'auth-token': token,
             }
         });
 
+        return res.data;
+    },
+    newManager: async(managerData, token) => {
+        const res = await tabinAPI.post("/restaurant/registerManager", managerData, {
+            headers: {
+                'auth-token': token,
+            }
+        });
+        
+        return res.data;
+    },
+    removeManager: async(token) => {
+        const res = await tabinAPI.post("/restaurant/removeManager", {
+            headers: {
+                'auth-token': token,
+            }
+        });
+        
+        return res.data;
+    },
+    newMeal: async(mealData, token) => {
+        const res = await tabinAPI.post("/meal/register", mealData, {
+            headers: {
+                'Content-type': `multipart/form-data`,
+                'auth-token': token,
+            }
+        });
+
+        return res.data;
+    },
+    getUsernameById: async(userData, token) => {
+        console.log("tabservice", token);
+        const res = await tabinAPI.get("/user/getUsernameById", userData, {
+            headers: {
+                'auth-token': token,
+            }
+        });
         return res.data;
     },
     login: async(email, pass) => {
@@ -101,12 +138,8 @@ const tabinService = {
 
         return res.data;
     },
-    registerUser: async(token) => {
-        const res = await tabinAPI.get("/user/loggedUser", {
-            headers: {
-                'auth-token': token,
-            }
-        });
+    registerUser: async(registerData) => {
+        const res = await tabinAPI.post("/auth/register", registerData);
 
         return res.data;
     },

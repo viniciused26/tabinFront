@@ -35,6 +35,15 @@ export default function Menu(props) {
     }
   }
 
+  function arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+    
+    return window.btoa(binary);
+};
+
+
   useEffect(() => {
     getMeals();
   }, []);
@@ -53,7 +62,11 @@ export default function Menu(props) {
         <Typography variant="body2" color="text.secondary">
             {meal.description}
         </Typography>
-        <br/>
+        
+        { meal?.img ? 
+          <img alt="ihul" src={`data:image/jpeg;base64,${arrayBufferToBase64(meal.img?.data?.data)}`}/> :
+          null
+        }
         <Typography style={{textDecoration: 'line-through'}} variant="body2" color="text.secondary" >
             R$ {meal.standartPrice}
         </Typography>

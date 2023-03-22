@@ -7,6 +7,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../assets/logo.png';
 import './styles.css';
 
@@ -20,6 +21,11 @@ const tabinTheme = createTheme({
 
 export default function Navbar(props) {
   const isHomepage = props.isHomepage;
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  };
 
   if (isHomepage) {
     return (
@@ -60,6 +66,15 @@ export default function Navbar(props) {
               color="inherit"
             >
               <NotificationsIcon/>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="notifications of current user"
+              aria-controls="menu-appbar"
+              color="inherit"
+              onClick={ () => handleLogout() }
+            >
+              <ExitToAppIcon/>
             </IconButton>
           </div>
         </Toolbar>

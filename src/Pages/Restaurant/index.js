@@ -7,25 +7,29 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { tabinService } from "../../Services/tabinService";
-const RESTAURANT_URL = 'api/restaurant/listByName';
-
+import AddRestaurant from "../../Components/newRestaurant";
 
 const RestaurantPage = (props) => {
-  const [manager, setManager] = useState([]);
+  const [manager, setManager] = useState('');
   const [isManager, setIsManager] = useState(false);
   const [hasRestaurant, setHasRestaurant] = useState(false);
-  const [restaurant, setRestaurant] = useState([]);
+  const [restaurantName, setRestaurantName] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [managerName, setManagerName] = useState('');
 
   async function getManagerInfo(){
+    console.log("manager info");
     try{
       const response = await tabinService.getRestaurantIdByOwner(props.currentToken);
       setManager(response?.manager);
+      setManagerName(response?.managerName);
+      setRestaurantName(response?.name);
       setHasRestaurant(true);
     }catch(err){
       if (err.response.data === "This owner has no restaurants!"){
         try {
           const response = await tabinService.getRestaurantIdByManager(props.currentToken);
-          setRestaurant(response);
+          setRestaurantName(response?.name);
           setIsManager(true);
           setHasRestaurant(true);
         } catch (err) {
@@ -38,8 +42,10 @@ const RestaurantPage = (props) => {
 
   useEffect(() => {
     getManagerInfo();
-    console.log(manager);
-  }, []);
+  });
+
+
+  
 
   if(!hasRestaurant){
     return (
@@ -51,6 +57,10 @@ const RestaurantPage = (props) => {
           <Typography variant={"subtitle2"} style={{marginBottom: "1%"}}>
             Crie um restaurante ou peça para ser gerente ao seu chefe!
           </Typography>
+          <div>
+            <Button variant="contained" onClick={() => { setOpenDialog(true) }}> Criar Restaurante</Button>
+          </div>
+          <AddRestaurant openDialog={openDialog} setOpenDialog={setOpenDialog} currentToken={props.currentToken}/>
         </Container>
       </Page>
     );
@@ -61,7 +71,7 @@ const RestaurantPage = (props) => {
       <Page>
         <Container>
           <Typography variant={"h3"} style={{marginBottom: "1%"}}>
-            RESTAURANT NAME
+            {restaurantName}
           </Typography>
         </Container>
       </Page>
@@ -72,18 +82,18 @@ const RestaurantPage = (props) => {
     <Page>
         <Container>
           <Typography variant={"h3"} style={{marginBottom: "1%"}}>
-            RESTAURANT NAME
+            {restaurantName}
           </Typography>
           <Typography variant={"h4"} style={{marginBottom: "1%"}}>
             Gerentes
           </Typography>
         </Container>
         <CardContainer>
-          {manager.length != 0 ? 
-            <ManagerCard newManager={true} name={manager.name} email={manager.email} /> :
-            null
+          {manager?.length >= 1 ? 
+            <ManagerCard newManager={false} name={managerName} /> :
+            <ManagerCard newManager={true} currentToken={props.currentToken}/>
           }
-          <ManagerCard newManager={false} name={manager.name} email={manager.email} />
+          
         </CardContainer>
     </Page>
   );

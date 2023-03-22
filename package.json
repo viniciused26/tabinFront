@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "homepage": "https://tabin.com.br/",
+  "homepage": "http://tabin.com.br/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "downloadjs": "^1.4.7",
+    "form-data": "^3.0.1",
     "html2canvas": "^1.4.1",
     "qrcode": "^1.5.1",
     "react": "^18.1.0",
