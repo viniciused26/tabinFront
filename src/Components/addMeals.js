@@ -1,4 +1,4 @@
-import { DialogContent, DialogTitle } from "@mui/material";
+import { DialogContent, DialogTitle, TextField, Button, MenuItem } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import { useState, useEffect, useRef } from "react";
 import { tabinService } from "../Services/tabinService";
@@ -71,50 +71,50 @@ export default function AddMeals( props, setOpenDialog ) {
       <DialogTitle>ADICIONE UM PRATO</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
-          <span>nome: </span>
-          <input 
+          <TextField 
             type="string" 
             id="name"
             autoComplete="off" 
             onChange={(e) => setName(e.target.value)} 
             value={name}
-            required 
+            required
+            label="Nome" 
           /> 
           
           <br/>
           <br/>
             
-          <span>descrição do prato: </span>
-          <input 
+          <TextField 
             type="string" 
             id="description"
             onChange={(e) => setDescription(e.target.value)} 
             value={description}
-            required 
+            required
+            label="Descrição do prato" 
           />
 
           <br/>
           <br/>
 
-          <span>preço padrão (R$): </span>
-          <input 
+          <TextField 
             type="number" 
             id="standartPrice"
             onChange={(e) => setStandartPrice(e.target.value)} 
             value={standartPrice}
-            required 
+            required
+            label="Preço padrão (R$):" 
           />
 
           <br/>
           <br/>
           
-          <span>preço promocional (R$): </span>
-          <input 
+          <TextField 
             type="number" 
             id="discountPrice"
             onChange={(e) => setDiscountPrice(e.target.value)} 
             value={discountPrice}
             required 
+            label="Preço promocional (R$):" 
           />
 
           {standartPrice && discountPrice ? <span> {(1 - (discountPrice/standartPrice))*100}% de desconto </span> : null}
@@ -123,34 +123,34 @@ export default function AddMeals( props, setOpenDialog ) {
           <br/>
           <br/>
           
-          <span>categoria do prato: </span>
-          
-          <select 
+          <TextField
+            select 
             type="string" 
             id="currentType"
             onChange={(e) => setCurrentType(e.target.value)} 
             value={currentType}
-            required 
+            required
+            label="Categoria do prato" 
           >
             {types.map((type) => {
             return(
-              <option value={type}>{type}</option>
+              <MenuItem value={type}>{type}</MenuItem>
             );
           })}
-          </select>
+          </TextField>
           
           {currentType === 'Definir categoria' ? 
             <span>
             <br/>
             <br/>
             
-            <span>Insira o nome da nova categoria: </span>
-            <input 
+            <TextField 
               type="string" 
               id="newType"
               onChange={(e) => setNewType(e.target.value)} 
               value={newType}
-              required 
+              required
+              label="Nova categoria" 
             />
             </span> : 
           null}
@@ -158,20 +158,19 @@ export default function AddMeals( props, setOpenDialog ) {
           <br/>
           <br/>
 
-          <span>quantas pessoas serve: </span>
-          <input 
+          <TextField 
             type="number" 
             id="peopleItServes"
             onChange={(e) => setPeopleItServes(e.target.value)} 
             value={peopleItServes}
-            required 
+            required
+            label="Serve quantas pessoas" 
           />
           
           <br/>
           <br/>
 
-          <span>imagem: </span>
-          <input 
+          <TextField 
             type='file' 
             name='image'
             id='image' 
@@ -182,7 +181,7 @@ export default function AddMeals( props, setOpenDialog ) {
           <br/>
           <br/>
          
-          <span/> <button type="submit">enviar</button>
+          <span/> <Button variant="contained" type="submit">enviar</Button>
         </form>
       </DialogContent>
     </Dialog>

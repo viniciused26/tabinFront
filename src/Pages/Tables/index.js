@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Page, Container, CardContainer } from "./style.js";
 import { TableCard } from "../../Components/TableCard"
-import { Card, CardActions, Box, Modal, Typography, Button } from "@mui/material";
+import { Card, CardActions, Box, Modal, Typography, Button, TextField } from "@mui/material";
 import { tabinService } from "../../Services/tabinService";
 import QRCode from 'react-qr-code';
 import QRCodeLink from 'qrcode';
@@ -162,8 +162,8 @@ const TablesPage = (props) => {
             <Box sx={modalStyle}>
             <form onSubmit={handleSubmit}>
               <div>
-                Identificador:
-                <input
+                <TextField
+                  label="Identificador"
                   type="number" 
                   id="ident" 
                   ref={identRef} 
@@ -173,7 +173,7 @@ const TablesPage = (props) => {
                   required 
                 />
               </div>
-              <button type="submit"> ENVIAR </button>
+              <Button style={{ marginTop: '5%' }} variant="contained" type="submit"> ENVIAR </Button>
             </form>
             </Box>
            : 
