@@ -14,7 +14,9 @@ import { MealsPage } from "./Pages/Meals"
 import { TablesPage } from "./Pages/Tables"
 import { TermsPage } from "./Pages/Terms"
 import { PolicyPage } from "./Pages/Policy"
-
+import { SuccessPage } from "./Pages/Success"
+import { HelpPage } from "./Pages/Help"
+import {RegisterPage} from "./Pages/Register"
 
 import useToken from './useToken';
 
@@ -32,6 +34,8 @@ function App() {
             <Route path="/consumerPage/:restaurant/:table" element={<ConsumerPage />} />
             <Route path="/termsPage" element={<TermsPage />} />
             <Route path="/policyPage" element={<PolicyPage />} />
+            <Route path="/successPage" element={<SuccessPage />} />
+            <Route path="/registerPage" element={<RegisterPage />} />
           </Routes>
       </Router>
       </div>
@@ -50,6 +54,7 @@ function App() {
           <Route path="/createRestaurant" element={<CreateRestaurantPage/>} />
           <Route path="/profilePage" element={<ProfilePage currentToken={token}/>} />
           <Route path="/termsPage" element={<TermsPage />} />
+          <Route path="/helpPage" element={<HelpPage />} />
           <Route path="/policyPage" element={<PolicyPage />} />
         </Routes>
     </Router>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card, CardActions, CardContent, Button, Typography } from "@mui/material";
 import { IconButton } from '@mui/material';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
+import { tabinService } from "../../Services/tabinService";
 
 const TableCard = (props) => {
 
@@ -9,6 +10,15 @@ const TableCard = (props) => {
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
+    }
+
+    const handleRemove = async (id) => {
+        
+        const tableData = {
+            _id: id
+        };
+
+       await tabinService.removeTable(tableData, props.token);
     }
 
     const indetifier = props.identifier;
@@ -35,7 +45,7 @@ const TableCard = (props) => {
                     null }
                 </CardContent>
                 <CardActions style={{display: 'flex',justifyContent: 'space-between'}}>
-                    <Button style={{ border: "2px solid" }} variant="outlined">Excluir mesa</Button>
+                    <Button style={{ border: "2px solid" }} variant="outlined" onClick={ () => handleRemove(props.id)}>Excluir mesa</Button>
                     <IconButton onClick={() => props.qrCodeClick(indetifier)}><QrCode2Icon style={{fontSize: '180%', color: "black"}}/></IconButton>
                 </CardActions>
             </Card>

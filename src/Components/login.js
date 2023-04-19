@@ -1,5 +1,7 @@
-import { Modal, Box, Checkbox, Typography } from "@mui/material";
-import { AppBar, Toolbar, TextField } from "@mui/material";
+import * as React from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { Modal, Box, Checkbox, Typography, IconButton } from "@mui/material";
+import { AppBar, Toolbar, TextField, Snackbar, Stack } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { tabinService } from "../Services/tabinService";
@@ -8,6 +10,7 @@ import { Button } from "@mui/material";
 import Logo from "../assets/logo.png";
 import { LandingPage } from "../Pages/Landing";
 import { typography } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_URL = "auth/login";
 
@@ -28,6 +31,12 @@ export default function Login({ setToken }) {
       window.removeEventListener("resize", handleWindowResize);
     };
   });
+  
+  const navigate = useNavigate();
+
+  const navigateRegister = () => {
+    navigate("/registerPage");
+  };
 
   const modalStyle = {
     position: "absolute",
@@ -35,6 +44,17 @@ export default function Login({ setToken }) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 500,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const modalStyleMobile = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 250,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -69,14 +89,18 @@ export default function Login({ setToken }) {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [phone, setPhone] = useState("");
 
+  const [warnMessage, setWarnMessage] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await tabinService.login(email, password);
-      setToken(response);
+      setWarnMessage("");
+      setToken(response?.data);
     } catch (err) {
-      console.log("ERRO: ", err);
+      console.log("ERRO: ", err.response?.data);
+      setWarnMessage(err.response?.data);
     }
   };
 
@@ -97,8 +121,15 @@ export default function Login({ setToken }) {
 
     try {
       const response = await tabinService.registerUser(registerData);
+      // setToken(response);
+      console.log("TESTE1");
+      setWarnMessage("");
+      handleCloseSecond();
+      setOpenFirst(true);
+      console.log("TESTE2");
     } catch (err) {
       console.log("ERRO: ", err);
+      setWarnMessage(err.response?.data);
     }
   };
 
@@ -126,7 +157,7 @@ export default function Login({ setToken }) {
               color="secondary"
               variant="contained"
               disableElevation
-              onClick={handleClickSecond}
+              onClick={navigateRegister}
               style={
                 windowSize[0] < 768
                   ? { marginBottom: "5%", marginTop: "5%" }
@@ -140,7 +171,7 @@ export default function Login({ setToken }) {
       </AppBar>
       <LandingPage openRegister={handleClickSecond} />
       <Modal open={openFirst} onClose={handleCloseFirst}>
-        <Box sx={modalStyle}>
+        <Box sx={windowSize[0] < 425 ? modalStyleMobile : modalStyle}>
           <form onSubmit={handleSubmit}>
             <div>
               <TextField
@@ -166,6 +197,13 @@ export default function Login({ setToken }) {
                 style={{ marginBottom: "3%" }}
               />
             </div>
+            <div>
+              <Typography
+                style={{ display: "inline-block", marginBottom: "5%" }}
+              >
+                {warnMessage}
+              </Typography>
+            </div>
             <Button
               variant="contained"
               type="submit"
@@ -173,92 +211,6 @@ export default function Login({ setToken }) {
             >
               {" "}
               Entrar{" "}
-            </Button>
-          </form>
-        </Box>
-      </Modal>
-      <Modal open={openSecond} onClose={handleCloseSecond}>
-        <Box sx={modalStyle}>
-          <form onSubmit={handleRegister}>
-            <div>
-              <TextField
-                type="string"
-                id="nome"
-                autoComplete="off"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                required
-                label="Nome completo"
-                style={{ marginBottom: "3%" }}
-              />
-            </div>
-            <div>
-              <TextField
-                type="email"
-                id="email"
-                ref={emailRef}
-                autoComplete="off"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                required
-                label="E-mail"
-                style={{ marginBottom: "3%" }}
-              />
-            </div>
-            <div>
-              <TextField
-                type="string"
-                id="phone"
-                autoComplete="off"
-                onChange={(e) => setPhone(e.target.value)}
-                value={phone}
-                required
-                label="Telefone com DDD"
-                style={{ marginBottom: "3%" }}
-              />
-            </div>
-            <div>
-              <TextField
-                type="password"
-                id="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                required
-                label="Senha"
-                style={{ marginBottom: "3%" }}
-              />
-            </div>
-            <div>
-              <TextField
-                type="password"
-                id="passwordCheck"
-                onChange={(e) => setPasswordCheck(e.target.value)}
-                value={passwordCheck}
-                required
-                label="Confirme sua senha"
-                style={{ marginBottom: "3%" }}
-              />
-            </div>
-            <div >
-              <Checkbox required id="terms" />
-              <Typography style={{display: 'inline-block'}} >
-                Li e concordo com os{" "}
-                <a href="http://tabin.com.br/termsPage"> termos de uso: </a>
-              </Typography>
-            </div>
-            <div>
-              <Checkbox required id="policy" />
-              <Typography style={{display: 'inline-block'}} >
-                Li e concordo com a{" "}
-                <a href="http://tabin.com.br/policyPage">
-                  {" "}
-                  política de privacidade:{" "}
-                </a>
-              </Typography>
-            </div>
-            <Button variant="contained" type="submit">
-              {" "}
-              CADASTRAR{" "}
             </Button>
           </form>
         </Box>

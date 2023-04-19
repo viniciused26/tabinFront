@@ -1,106 +1,127 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Page, Container, CardContainer } from "./style.js";
-import { TableCard } from "../../Components/TableCard"
-import { Card, CardActions, Box, Modal, Typography, Button, TextField } from "@mui/material";
+import { TableCard } from "../../Components/TableCard";
+import {
+  Card,
+  CardActions,
+  Box,
+  Modal,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
 import { tabinService } from "../../Services/tabinService";
-import QRCode from 'react-qr-code';
-import QRCodeLink from 'qrcode';
-import FrameQR from '../../assets/frameQR.png';
-import downloadjs from 'downloadjs';
-import html2canvas from 'html2canvas';
-
+import QRCode from "react-qr-code";
+import QRCodeLink from "qrcode";
+import FrameQR from "../../assets/frameQR.png";
+import downloadjs from "downloadjs";
+import html2canvas from "html2canvas";
 
 const TablesPage = (props) => {
   const [tables, setTables] = useState([]);
 
   const modalStyle = {
-    position: 'relative',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "relative",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: 'background.paper',
+    bgcolor: "background.paper",
     boxShadow: 24,
-    textAlign: 'center',
+    textAlign: "center",
     p: 4,
   };
 
   const modalStyleQR = {
-    position: 'relative',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "relative",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: 'background.paper',
+    bgcolor: "background.paper",
     boxShadow: 24,
-    textAlign: 'center',
+    textAlign: "center",
     p: 4,
-    backgroundColor: '#2e1133',
+    backgroundColor: "#2e1133",
   };
-
 
   const [open, setOpen] = useState(false);
   const [qrModal, setQrModal] = useState(false);
-  const [qrLink, setQrLink] = useState('');
-  
+  const [qrLink, setQrLink] = useState("");
+
+  const [warnMessage, setWarnMessage] = useState("");
+
   const handleClick = () => {
     setQrModal(false);
     setOpen(true);
-  }
+  };
 
   const handleQRDownload = async () => {
-    const qrCodeElement = document.getElementById('imageFile');
+    const qrCodeElement = document.getElementById("imageFile");
     if (!qrCodeElement) return;
-    
-    console.log("oik")
+
+    console.log("oik");
     const canvas = await html2canvas(qrCodeElement);
-    const dataURL = canvas.toDataURL('image/png');
-    downloadjs(dataURL, 'qrCode_mesax', 'image/png')
-  }
+    const dataURL = canvas.toDataURL("image/png");
+    downloadjs(dataURL, "qrCode_mesax", "image/png");
+  };
 
   const handleQRClick = (ident) => {
     let link = `http://tabin.com.br/consumerPage/${restaurantName}/${ident}`;
-    QRCodeLink.toDataURL(link, {
-      width: 600,
-      margin: 3,
-    }, function(err,url){
-      setQrLink(url);
-    });
+    QRCodeLink.toDataURL(
+      link,
+      {
+        width: 600,
+        margin: 3,
+      },
+      function (err, url) {
+        setQrLink(url);
+      }
+    );
 
     setQrModal(true);
     setOpen(true);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   const identRef = useRef();
 
-  const [ident, setIdent] = useState('');
-  const [restaurant, setRestaurant] = useState('');
-  const [restaurantName, setRestaurantName] = useState('');
-
+  const [ident, setIdent] = useState("");
+  const [restaurant, setRestaurant] = useState("");
+  const [restaurantName, setRestaurantName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try{
-      const response = await tabinService.tableRegister(ident, props.currentToken);
-    }catch(err){
+    try {
+      const response = await tabinService.tableRegister(
+        ident,
+        props.currentToken
+      );
+      setWarnMessage("");
+      window.location.reload();
+    } catch (err) {
       console.log("ERRO: ", err);
+      setWarnMessage(err.response?.data);
     }
-  }
+  };
 
-  async function getRestaurantId(){
-    try{
-      const response = await tabinService.getRestaurantIdByOwner(props.currentToken);
+  async function getRestaurantId() {
+    try {
+      const response = await tabinService.getRestaurantIdByOwner(
+        props.currentToken
+      );
       setRestaurant(response?._id);
       setRestaurantName(response?.name);
-    }catch(err){
-      if (err.response.data === "This owner has no restaurants!"){
+    } catch (err) {
+      if (err.response.data === "This owner has no restaurants!") {
         try {
-          const response = await tabinService.getRestaurantIdByManager(props.currentToken);
+          const response = await tabinService.getRestaurantIdByManager(
+            props.currentToken
+          );
           setRestaurant(response?._id);
           setRestaurantName(response?.name);
         } catch (err) {
@@ -111,11 +132,11 @@ const TablesPage = (props) => {
     }
   }
 
-  async function getTables(){
-    try{
+  async function getTables() {
+    try {
       const response = await tabinService.listRestaurantTables(restaurant);
       setTables(response);
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
   }
@@ -126,69 +147,113 @@ const TablesPage = (props) => {
 
   useEffect(() => {
     getTables();
-    console.log("aqui", tables)
+    console.log("aqui", tables);
   }, [restaurant]);
 
-  if(!restaurant){
+  if (!restaurant) {
     return (
       <div className="App">
         <center>
           <p>VOCÊ NÃO TEM RESTAURANTE!</p>
-        </center>        
+        </center>
       </div>
     );
   }
 
-  return(
+  return (
     <Page>
-        <Container>
-          <Typography variant={"h3"} style={{marginBottom: "1%"}}>
-            Minhas mesas
-          </Typography>
-        </Container>
-        <CardContainer>
-          {tables.map((table) => {
-            return(
-              <TableCard newTable={false} identifier={table.identifier} owner={""} help={table.isAskingHelp} qrCodeClick={handleQRClick}/>
-            );
-          })}
-          <TableCard newTable={true} identifier={"1"} owner={""} help={true} onClick={handleClick}/>
-        </CardContainer>
-        <Modal
-          open={open}
-          onClose={handleClose}
-        >
-          { !qrModal ?
-            <Box sx={modalStyle}>
+      <Container>
+        <Typography variant={"h3"} style={{ marginBottom: "1%" }}>
+          Minhas mesas
+        </Typography>
+      </Container>
+      <CardContainer>
+        {tables.map((table) => {
+          return (
+            <TableCard
+              id={table._id}
+              token={props.currentToken}
+              newTable={false}
+              identifier={table.identifier}
+              owner={""}
+              help={table.isAskingHelp}
+              qrCodeClick={handleQRClick}
+            />
+          );
+        })}
+        <TableCard
+          newTable={true}
+          identifier={"1"}
+          owner={""}
+          help={true}
+          onClick={handleClick}
+        />
+      </CardContainer>
+      <Modal open={open} onClose={handleClose}>
+        {!qrModal ? (
+          <Box sx={modalStyle}>
             <form onSubmit={handleSubmit}>
+              <div>
+                <Typography
+                  style={{ display: "inline-block", marginBottom: "5%" }}
+                >
+                  {warnMessage}
+                </Typography>
+              </div>
               <div>
                 <TextField
                   label="Identificador"
-                  type="number" 
-                  id="ident" 
-                  ref={identRef} 
-                  autoComplete="off" 
-                  onChange={(e) => setIdent(e.target.value)} 
+                  type="number"
+                  id="ident"
+                  ref={identRef}
+                  autoComplete="off"
+                  onChange={(e) => setIdent(e.target.value)}
                   value={ident}
-                  required 
+                  required
                 />
               </div>
-              <Button style={{ marginTop: '5%' }} variant="contained" type="submit"> ENVIAR </Button>
+              <Button
+                style={{ marginTop: "5%" }}
+                variant="contained"
+                type="submit"
+              >
+                {" "}
+                ENVIAR{" "}
+              </Button>
             </form>
-            </Box>
-           : 
-            <Box sx={modalStyleQR}>
-              <div id='imageFile'>
-                <img alt="qrcode" src={FrameQR} style={{width: "100%", position: 'relative', top: 0, left: 0}} />
-                <img alt="qrcode" src={qrLink} style={{width: "70%", position: 'absolute', top: '16.5%', left: '15%'}} />
-              </div>
-              <Button onClick={handleQRDownload} variant="contained" color="primary" style={{ marginTop: "5%"}}>Baixar QR Code</Button>
-            </Box>
-          }
-        </Modal>
+          </Box>
+        ) : (
+          <Box sx={modalStyleQR}>
+            <div id="imageFile">
+              <img
+                alt="qrcode"
+                src={FrameQR}
+                style={{ width: "100%", position: "relative", top: 0, left: 0 }}
+              />
+              <img
+                alt="qrcode"
+                src={qrLink}
+                style={{
+                  width: "70%",
+                  position: "absolute",
+                  top: "16.5%",
+                  left: "15%",
+                }}
+              />
+            </div>
+            <Button
+              onClick={handleQRDownload}
+              variant="contained"
+              color="primary"
+              style={{ marginTop: "5%" }}
+            >
+              Baixar QR Code
+            </Button>
+          </Box>
+        )}
+      </Modal>
     </Page>
   );
-}
+};
 
 export { TablesPage };
-

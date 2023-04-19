@@ -67,7 +67,7 @@ const tabinService = {
             password: pass
         });
         
-        return res.data;
+        return res;
     },
     getRestaurantMeals: async(restaurant) => {
         const res = await tabinAPI.get(`/meal/listRestaurantMeals/${restaurant}`);
@@ -154,6 +154,34 @@ const tabinService = {
     },
     askHelp: async(restaurant, table) => {
         const res = await tabinAPI.post(`/table/askService/${restaurant}/${table}`);
+
+        return res.data;
+    },
+    editMeal: async(mealData, token) => {
+        const res = await tabinAPI.put("/meal/update", mealData, {
+            headers: {
+                'Content-type': `multipart/form-data`,
+                'auth-token': token,
+            }
+        });
+
+        return res.data;
+    },
+    removeMeal: async(mealData, token) => {
+        const res = await tabinAPI.delete("/meal/remove", mealData, {
+            headers: {
+                'auth-token': token,
+            }
+        });
+
+        return res.data;
+    },
+    removeTable: async(tableData, token) => {
+        const res = await tabinAPI.delete("/table/remove", tableData, {
+            headers: {
+                'auth-token': token,
+            }
+        });
 
         return res.data;
     },

@@ -51,6 +51,7 @@ export default function Navbar(props) {
             <Button style={{ color: "white" }}> <Link to="/" style={{ color: 'inherit', textDecoration: 'none'}}> Restaurante </Link> </Button>
             <Button style={{ color: "white" }}> <Link to="/mealsPage" style={{ color: 'inherit', textDecoration: 'none'}}> Cardápio </Link> </Button>
             <Button style={{ color: "white" }}> <Link to="/tablesPage" style={{ color: 'inherit', textDecoration: 'none'}}> Mesas </Link> </Button>
+            <Button style={{ color: "white" }}> <Link to="/helpPage" style={{ color: 'inherit', textDecoration: 'none'}}> AJUDA </Link> </Button>
             <IconButton
               size="large"
               aria-label="account of current user"
